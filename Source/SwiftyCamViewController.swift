@@ -199,7 +199,7 @@ open class SwiftyCamViewController: UIViewController {
     public var outputFolder: String           = NSTemporaryDirectory()
     
     /// Public access to Pinch Gesture
-    fileprivate(set) public var pinchGesture  : UIPinchGestureRecognizer!
+    public var pinchGesture  : UIPinchGestureRecognizer!
 
     /// Public access to Pan Gesture
     fileprivate(set) public var panGesture    : UIPanGestureRecognizer!
