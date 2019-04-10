@@ -28,7 +28,7 @@ public protocol SwiftyCamButtonDelegate: class {
     
     /// Called When UILongPressGestureRecognizer enters UIGestureRecognizerState.began
     
-    func buttonDidBeginLongPress()
+    func buttonDidBeginDoubleTap()
     
     /// Called When UILongPressGestureRecognizer enters UIGestureRecognizerState.end
 
@@ -80,7 +80,9 @@ open class SwiftyCamButton: UIButton {
     /// UITapGestureRecognizer Function
     
     @objc fileprivate func Tap() {
+        
         guard buttonEnabled == true else {
+            
             return
         }
         
@@ -88,21 +90,12 @@ open class SwiftyCamButton: UIButton {
     }
     
     /// UILongPressGestureRecognizer Function
-    @objc fileprivate func LongPress(_ sender:UILongPressGestureRecognizer!)  {
+    @objc fileprivate func doubleTapped()  {
         guard buttonEnabled == true else {
             return
         }
-        
-        switch sender.state {
-        case .began:
-            delegate?.buttonDidBeginLongPress()
-            startTimer()
-        case .cancelled, .ended, .failed:
-            invalidateTimer()
-            delegate?.buttonDidEndLongPress()
-        default:
-            break
-        }
+        delegate?.buttonDidBeginDoubleTap()
+        startTimer()
     }
     
     /// Timer Finished
@@ -134,8 +127,13 @@ open class SwiftyCamButton: UIButton {
     
     fileprivate func createGestureRecognizers() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(SwiftyCamButton.Tap))
-        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(SwiftyCamButton.LongPress))
-        self.addGestureRecognizer(tapGesture)
-        self.addGestureRecognizer(longGesture)
+        tapGesture.numberOfTapsRequired = 1
+         self.addGestureRecognizer(tapGesture)
+        
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(SwiftyCamButton.doubleTapped))
+        doubleTap.numberOfTapsRequired = 2
+        self.addGestureRecognizer(doubleTap)
+        
+        tapGesture.require(toFail: doubleTap)
     }
 }
