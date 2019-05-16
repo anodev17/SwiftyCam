@@ -21,7 +21,7 @@
  
  /// A UIViewController Camera View Subclass
  
- open class SwiftyCamViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
+ open class SwiftyCamViewController: UIViewController {
     
     // MARK: Enumeration Declaration
     
