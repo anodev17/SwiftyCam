@@ -784,7 +784,10 @@
         let movieFileOutput = AVCaptureMovieFileOutput()
         let videoDataOutput = AVCaptureVideoDataOutput()
       
-        videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "sample_buffer"))
+        videoDataOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable as! String: NSNumber(value: kCVPixelFormatType_32BGRA)]
+        videoDataOutput.alwaysDiscardsLateVideoFrames = true
+  
+        videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "samplequeue"))
         
         if self.session.canAddOutput(videoDataOutput) {
           session.addOutput(videoDataOutput)
