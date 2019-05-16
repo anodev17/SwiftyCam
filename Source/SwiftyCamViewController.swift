@@ -797,11 +797,7 @@
             self.movieFileOutput = movieFileOutput
         }
     }
-    
-    //readjust sample buffer
-    fileprivate func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        print("got frames")
-    }
+   
     /// Configure Photo Output
     
     fileprivate func configurePhotoOutput() {
