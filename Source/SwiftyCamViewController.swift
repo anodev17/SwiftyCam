@@ -258,10 +258,6 @@
     /// Movie File Output variable
     
     fileprivate var movieFileOutput              : AVCaptureMovieFileOutput?
-   
-   /// Sample Buffer Output variable
-    
-    fileprivate var videoDataOutput              : AVCaptureVideoDataOutput?
     
     /// Photo File Output variable
     
@@ -781,18 +777,7 @@
     /// Configure Movie Output
     
     fileprivate func configureVideoOutput() {
-        let movieFileOutput = AVCaptureMovieFileOutput()
-        let videoDataOutput = AVCaptureVideoDataOutput()
-      
-        videoDataOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as AnyHashable as! String: NSNumber(value: kCVPixelFormatType_32BGRA)]
-        videoDataOutput.alwaysDiscardsLateVideoFrames = true
-  
-        videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "samplequeue"))
-        
-        if self.session.canAddOutput(videoDataOutput) {
-          session.addOutput(videoDataOutput)
-          self.videoDataOutput = videoDataOutput
-        }
+       let movieFileOutput = AVCaptureMovieFileOutput()
         if self.session.canAddOutput(movieFileOutput) {
             self.session.addOutput(movieFileOutput)
             if let connection = movieFileOutput.connection(with: AVMediaType.video) {
