@@ -21,7 +21,7 @@
  
  /// A UIViewController Camera View Subclass
  
- open class SwiftyCamViewController: UIViewController {
+ open class SwiftyCamViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     
     // MARK: Enumeration Declaration
     
@@ -258,6 +258,10 @@
     /// Movie File Output variable
     
     fileprivate var movieFileOutput              : AVCaptureMovieFileOutput?
+   
+   /// Sample Buffer Output variable
+    
+    fileprivate var videoDataOutput              : AVCaptureVideoDataOutput?
     
     /// Photo File Output variable
     
@@ -778,7 +782,14 @@
     
     fileprivate func configureVideoOutput() {
         let movieFileOutput = AVCaptureMovieFileOutput()
+        let videoDataOutput = AVCaptureVideoDataOutput()
+      
+        videoDataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "sample_buffer"))
         
+        if self.session.canAddOutput(videoDataOutput) {
+          session.addOutput(videoDataOutput)
+          self.videoDataOutput = videoDataOutput
+        }
         if self.session.canAddOutput(movieFileOutput) {
             self.session.addOutput(movieFileOutput)
             if let connection = movieFileOutput.connection(with: AVMediaType.video) {
@@ -799,6 +810,10 @@
         }
     }
     
+    //readjust sample buffer
+    fileprivate func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        print("got frames")
+    }
     /// Configure Photo Output
     
     fileprivate func configurePhotoOutput() {
