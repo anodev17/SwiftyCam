@@ -776,16 +776,17 @@
     
     /// Configure Movie Output
     
-    fileprivate func configureVideoOutput() {
-       let movieFileOutput = AVCaptureMovieFileOutput()
-        if self.session.canAddOutput(movieFileOutput) {
-            self.session.addOutput(movieFileOutput)
-            if let connection = movieFileOutput.connection(with: AVMediaType.video) {
-                if connection.isVideoStabilizationSupported {
-                    connection.preferredVideoStabilizationMode = .auto
-                }
-                
-                if #available(iOS 11.0, *) {
+  fileprivate func configureVideoOutput() {
+		let movieFileOutput = AVCaptureMovieFileOutput()
+
+		if self.session.canAddOutput(movieFileOutput) {
+			self.session.addOutput(movieFileOutput)
+			if let connection = movieFileOutput.connection(with: AVMediaType.video) {
+				if connection.isVideoStabilizationSupported {
+					connection.preferredVideoStabilizationMode = .auto
+				}
+
+				if #available(iOS 11.0, *) {
                     if let videoCodecType = videoCodecType {
                         if movieFileOutput.availableVideoCodecTypes.contains(videoCodecType) == true {
                             // Use the H.264 codec to encode the video.
@@ -793,10 +794,10 @@
                         }
                     }
                 }
-            }
-            self.movieFileOutput = movieFileOutput
-        }
-    }
+			}
+			self.movieFileOutput = movieFileOutput
+		}
+	}
    
     /// Configure Photo Output
     
